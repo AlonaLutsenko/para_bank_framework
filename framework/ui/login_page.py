@@ -1,20 +1,33 @@
-from selenium.webdriver.common.by import By
+from framework.constants.credentials import CREDENTIALS
+from framework.ui.base_page import BasePage
+from framework.ui.locators import LoginPageLocators
+from framework.utils.web_element_wrapper import WebElementWrapper
 
-class LoginPage:
+
+class LoginPage(BasePage):
     def __init__(self, driver):
-        self.driver = driver
-        self.username_input = (By.NAME, "username")
-        self.password_input = (By.NAME, "password")
-        self.login_button = (By.CSS_SELECTOR, "div.login input.button[value='Log In']")
-        self.error_title = (By.CLASS_NAME, "title")
+        super().__init__(driver)
+        self.username_input = WebElementWrapper(
+            driver, LoginPageLocators.USERNAME_INPUT.as_tuple()
+        )
+        self.password_input = WebElementWrapper(
+            driver, LoginPageLocators.PASSWORD_INPUT.as_tuple()
+        )
+        self.login_button = WebElementWrapper(
+            driver, LoginPageLocators.LOGIN_BUTTON.as_tuple()
+        )
+        self.error_title = WebElementWrapper(
+            driver, LoginPageLocators.ERROR_TITLE.as_tuple()
+        )
 
     def open(self, url):
-        self.driver.get(url)
+        self.driver.open(url)
 
-    def login(self, username, password):
-        self.driver.find_element(*self.username_input).send_keys(username)
-        self.driver.find_element(*self.password_input).send_keys(password)
-        self.driver.find_element(*self.login_button).click()
+    def login(self, user_type: str = "default"):
+        creds = CREDENTIALS[user_type]
+        self.username_input.type(creds["username"])
+        self.password_input.type(creds["password"])
+        self.login_button.click()
 
     def get_error_message(self):
-        return self.driver.find_element(*self.error_title).text
+        return self.error_title.get_text()
