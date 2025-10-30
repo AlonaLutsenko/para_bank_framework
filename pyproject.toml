@@ -1,6 +1,7 @@
 [tool.black]
 target-version = ["py311"]
 skip-string-normalization = true
+line-length = 120
 
 [tool.isort]
 profile = "black"
@@ -9,6 +10,7 @@ multi_line_output = 3
 include_trailing_comma = true
 
 [tool.flake8]
+max-line-length = 120
 extend-ignore = [
     "E203",
     "W503",
