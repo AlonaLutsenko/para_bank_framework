@@ -1,5 +1,5 @@
 from framework.constants.urls import BASE_URL
-from framework.ui.login_page import LoginPage
+from selenium.pages.login_page import LoginPage
 
 
 def test_login_invalid_user(driver):
