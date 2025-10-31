@@ -1,8 +1,8 @@
 from functools import cached_property
 
 from framework.constants.credentials import CREDENTIALS
+from framework.utils.base_page import BasePage
 from framework.utils.web_element_wrapper import WebElementWrapper
-from selenium.base_page import BasePage
 from selenium.locators import LoginPageLocators
 
 
