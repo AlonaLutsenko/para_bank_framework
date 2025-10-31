@@ -16,5 +16,5 @@ def pytest_addoption(parser):
         "--browser",
         action="store",
         default="chrome",
-        help="Browser to run tests",  # noqa: E501
+        help="Browser to run tests",
     )

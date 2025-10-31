@@ -10,7 +10,7 @@ class DriverFactory:
         if browser_name.lower() == "chrome":
             options = webdriver.ChromeOptions()
             options.add_argument("--start-maximized")
-            return webdriver.Chrome(ChromeDriverManager().install(), options=options)  # noqa: E501
+            return webdriver.Chrome(ChromeDriverManager().install(), options=options)
 
         elif browser_name.lower() == "firefox":
             return webdriver.Firefox(GeckoDriverManager().install())
