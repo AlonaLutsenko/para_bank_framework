@@ -3,7 +3,7 @@ from functools import cached_property
 from framework.constants.credentials import CREDENTIALS
 from framework.utils.base_page import BasePage
 from framework.utils.web_element_wrapper import WebElementWrapper
-from selenium.locators import LoginPageLocators
+from ui.locators.login_locators import LoginPageLocators
 
 
 class LoginPage(BasePage):
