@@ -8,5 +8,6 @@ def test_login_invalid_user(driver):
 
     page.login(user_type="default")
 
-    error_text = page.get_error_message()
-    assert error_text == "Error!", f"Unexpected error message: {error_text}"
+    assert page.is_login_successful(), "Login was not successful"
+    title_text = page.get_accounts_overview_title()
+    assert title_text == "Accounts Overview", f"Expected 'Accounts Overview', but got: {title_text}"

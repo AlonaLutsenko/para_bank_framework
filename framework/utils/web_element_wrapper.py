@@ -4,13 +4,14 @@ from selenium.common.exceptions import NoSuchElementException
 
 from framework.utils.locators import Locator
 from framework.utils.wait import Wait
+from framework.utils.web_driver_wrapper import WebDriverWrapper
 
 
 class WebElementWrapper:
-    def __init__(self, driver, locator: Union[tuple, Locator], wait_timeout: int = 10):
+    def __init__(self, driver: WebDriverWrapper, locator: Union[tuple, Locator], wait_timeout: int = 10):
         self.driver = driver
         self.locator = self._normalize_locator(locator)
-        self.wait = Wait(driver, timeout=wait_timeout)
+        self.wait = Wait(driver.driver, timeout=wait_timeout)
 
     @staticmethod
     def _normalize_locator(locator: Union[tuple, Locator]) -> tuple:
@@ -20,7 +21,11 @@ class WebElementWrapper:
 
     def _get_element(self):
         try:
-            return self.driver.find_element(*self.locator)
+            if isinstance(self.locator, tuple):
+                locator_obj = Locator(self.locator[0], self.locator[1])
+            else:
+                locator_obj = self.locator
+            return self.driver.find_element(locator_obj)
         except NoSuchElementException:
             raise RuntimeError(f"Element not found: {self.locator}")
 
