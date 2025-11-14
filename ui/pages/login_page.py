@@ -19,19 +19,19 @@ class LoginPage(BasePage):
 
     @cached_property
     def username_input(self):
-        return WebElementWrapper(self.driver, self.Locators.USERNAME_INPUT.as_tuple())
+        return WebElementWrapper(self.driver, self.Locators.USERNAME_INPUT.as_tuple)
 
     @cached_property
     def password_input(self):
-        return WebElementWrapper(self.driver, self.Locators.PASSWORD_INPUT.as_tuple())
+        return WebElementWrapper(self.driver, self.Locators.PASSWORD_INPUT.as_tuple)
 
     @cached_property
     def login_button(self):
-        return WebElementWrapper(self.driver, self.Locators.LOGIN_BUTTON.as_tuple())
+        return WebElementWrapper(self.driver, self.Locators.LOGIN_BUTTON.as_tuple)
 
     @cached_property
     def error_title(self):
-        return WebElementWrapper(self.driver, self.Locators.ERROR_TITLE.as_tuple())
+        return WebElementWrapper(self.driver, self.Locators.ERROR_TITLE.as_tuple)
 
     def login(self, user_type: str = "default"):
         creds = CREDENTIALS[user_type]

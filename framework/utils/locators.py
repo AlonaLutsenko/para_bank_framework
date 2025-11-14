@@ -6,6 +6,7 @@ class Locator:
         self.by = by
         self.value = value
 
+    @property
     def as_tuple(self):
         return self.by, self.value
 
