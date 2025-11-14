@@ -2,30 +2,36 @@ from functools import cached_property
 
 from framework.base_page import BasePage
 from framework.constants.credentials import CREDENTIALS
+from framework.utils.locators import Locator
 from framework.utils.web_element_wrapper import WebElementWrapper
-from ui.locators.login_locators import LoginPageLocators
 
 
 class LoginPage(BasePage):
+    class Locators:
+        USERNAME_INPUT = Locator.name("username")
+        PASSWORD_INPUT = Locator.name("password")
+        LOGIN_BUTTON = Locator.css("div.login input.button[value='Log In']")
+        ERROR_TITLE = Locator.class_name("title")
+
     def __init__(self, driver):
         super().__init__(driver)
         self.driver = driver
 
     @cached_property
     def username_input(self):
-        return WebElementWrapper(self.driver, LoginPageLocators.USERNAME_INPUT.as_tuple())
+        return WebElementWrapper(self.driver, self.Locators.USERNAME_INPUT.as_tuple())
 
     @cached_property
     def password_input(self):
-        return WebElementWrapper(self.driver, LoginPageLocators.PASSWORD_INPUT.as_tuple())
+        return WebElementWrapper(self.driver, self.Locators.PASSWORD_INPUT.as_tuple())
 
     @cached_property
     def login_button(self):
-        return WebElementWrapper(self.driver, LoginPageLocators.LOGIN_BUTTON.as_tuple())
+        return WebElementWrapper(self.driver, self.Locators.LOGIN_BUTTON.as_tuple())
 
     @cached_property
     def error_title(self):
-        return WebElementWrapper(self.driver, LoginPageLocators.ERROR_TITLE.as_tuple())
+        return WebElementWrapper(self.driver, self.Locators.ERROR_TITLE.as_tuple())
 
     def login(self, user_type: str = "default"):
         creds = CREDENTIALS[user_type]
