@@ -1,7 +1,7 @@
 from functools import cached_property
 
+from framework.base_page import BasePage
 from framework.constants.credentials import CREDENTIALS
-from framework.utils.base_page import BasePage
 from framework.utils.web_element_wrapper import WebElementWrapper
 from ui.locators.login_locators import LoginPageLocators
 
