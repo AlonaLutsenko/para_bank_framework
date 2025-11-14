@@ -1,13 +1,22 @@
-from selenium.common import NoSuchElementException
+from typing import Union
 
+from selenium.common.exceptions import NoSuchElementException
+
+from framework.utils.locators import Locator
 from framework.utils.wait import Wait
 
 
 class WebElementWrapper:
-    def __init__(self, driver, locator: tuple, wait_timeout: int = 10):
+    def __init__(self, driver, locator: Union[tuple, Locator], wait_timeout: int = 10):
         self.driver = driver
-        self.locator = locator
+        self.locator = self._normalize_locator(locator)
         self.wait = Wait(driver, timeout=wait_timeout)
+
+    @staticmethod
+    def _normalize_locator(locator: Union[tuple, Locator]) -> tuple:
+        if isinstance(locator, Locator):
+            return locator.as_tuple
+        return locator
 
     def _get_element(self):
         try:
