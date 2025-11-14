@@ -1,7 +1,6 @@
+from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
-
-from selenium import webdriver
 
 
 class DriverFactory:
@@ -10,10 +9,12 @@ class DriverFactory:
         if browser_name.lower() == "chrome":
             options = webdriver.ChromeOptions()
             options.add_argument("--start-maximized")
-            return webdriver.Chrome(ChromeDriverManager().install(), options=options)
+            service = webdriver.chrome.service.Service(ChromeDriverManager().install())
+            return webdriver.Chrome(service=service, options=options)
 
         elif browser_name.lower() == "firefox":
-            return webdriver.Firefox(GeckoDriverManager().install())
+            service = webdriver.firefox.service.Service(GeckoDriverManager().install())
+            return webdriver.Firefox(service=service)
 
         else:
             raise ValueError(f"Browser '{browser_name}' is not supported")

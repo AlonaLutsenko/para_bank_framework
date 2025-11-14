@@ -1,8 +1,8 @@
-from framework.utils.locators import locators
+from framework.utils.locators import Locator
 
 
 class LoginPageLocators:
-    USERNAME_INPUT = locators.name("username")
-    PASSWORD_INPUT = locators.name("password")
-    LOGIN_BUTTON = locators.css("div.login input.button[value='Log In']")
-    ERROR_TITLE = locators.class_name("title")
+    USERNAME_INPUT = Locator.name("username")
+    PASSWORD_INPUT = Locator.name("password")
+    LOGIN_BUTTON = Locator.css("div.login input.button[value='Log In']")
+    ERROR_TITLE = Locator.class_name("title")
