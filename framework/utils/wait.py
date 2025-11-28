@@ -1,17 +1,17 @@
 from typing import Any, Callable, Optional, Tuple, Union
 
 from selenium.common.exceptions import StaleElementReferenceException
-from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 from framework.utils.locators import Locator
+from framework.utils.web_driver_wrapper import WebDriverWrapper
 
 
 class Wait:
 
-    def __init__(self, driver: WebDriver, timeout: int = 10, poll_frequency: float = 0.5):
+    def __init__(self, driver: WebDriverWrapper, timeout: int = 10, poll_frequency: float = 0.5):
         self.driver = driver
         self.timeout = timeout
         self.poll_frequency = poll_frequency
