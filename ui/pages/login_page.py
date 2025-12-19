@@ -16,7 +16,6 @@ class LoginPage(BasePage):
 
     def __init__(self, driver: WebDriverWrapper):
         super().__init__(driver)
-        self.driver = driver
 
     @cached_property
     def username_input(self):

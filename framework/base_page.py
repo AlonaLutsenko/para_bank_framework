@@ -1,4 +1,5 @@
 from framework.utils.wait import Wait
+from framework.utils.wait_conditions import WaitConditions
 from framework.utils.web_driver_wrapper import WebDriverWrapper
 
 
@@ -9,6 +10,4 @@ class BasePage:
 
     def open(self, url):
         self.driver.open(url)
-        self.wait.with_custom_condition(
-            lambda driver: driver.execute_script("return document.readyState") == "complete"
-        )
+        self.wait.with_custom_condition(WaitConditions.page_load_complete())

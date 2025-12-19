@@ -1,6 +1,4 @@
-from typing import Union
-
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 from framework.utils.locators import Locator
 from framework.utils.wait import Wait
@@ -8,24 +6,14 @@ from framework.utils.web_driver_wrapper import WebDriverWrapper
 
 
 class WebElementWrapper:
-    def __init__(self, driver: WebDriverWrapper, locator: Union[tuple, Locator], wait_timeout: int = 10):
+    def __init__(self, driver: WebDriverWrapper, locator: Locator):
         self.driver = driver
-        self.locator = self._normalize_locator(locator)
-        self.wait = Wait(driver.driver, timeout=wait_timeout)
-
-    @staticmethod
-    def _normalize_locator(locator: Union[tuple, Locator]) -> tuple:
-        if isinstance(locator, Locator):
-            return locator.as_tuple
-        return locator
+        self.locator = locator
+        self.wait = Wait(driver)
 
     def _get_element(self):
         try:
-            if isinstance(self.locator, tuple):
-                locator_obj = Locator(self.locator[0], self.locator[1])
-            else:
-                locator_obj = self.locator
-            return self.driver.find_element(locator_obj)
+            return self.driver.find_element(self.locator)
         except NoSuchElementException:
             raise RuntimeError(f"Element not found: {self.locator}")
 
@@ -47,7 +35,7 @@ class WebElementWrapper:
         try:
             element = self.wait.for_element_present(self.locator, timeout=2)
             return element.is_displayed()
-        except Exception:
+        except TimeoutException:
             return False
 
     def wait_for_visible(self, timeout: int = None):
