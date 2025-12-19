@@ -36,7 +36,7 @@ class Wait:
     def _create_wait(self, timeout: Optional[int] = None) -> WebDriverWait:
         timeout = timeout if timeout is not None else self.timeout
         kwargs = {
-            "driver": self.driver,
+            "driver": self.driver.driver,
             "timeout": timeout,
             "poll_frequency": self.poll_frequency,
         }
@@ -95,7 +95,7 @@ class Wait:
             try:
                 element = driver.find_element(*locator.as_tuple)
                 return element.get_attribute(attribute) == value
-            except (StaleElementReferenceException, Exception):
+            except (StaleElementReferenceException, NoSuchElementException):
                 return False
 
         return wait.until(_check_attribute)

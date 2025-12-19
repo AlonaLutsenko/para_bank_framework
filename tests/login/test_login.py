@@ -2,7 +2,7 @@ from framework.constants.urls import BASE_URL
 from ui.pages.login_page import LoginPage
 
 
-def test_login_invalid_user(driver):
+def test_login_valid_user(driver):
     page = LoginPage(driver)
     page.open(BASE_URL)
 
