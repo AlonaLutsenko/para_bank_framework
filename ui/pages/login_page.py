@@ -1,5 +1,7 @@
 from functools import cached_property
 
+from selenium.common.exceptions import TimeoutException
+
 from framework.base_page import BasePage
 from framework.constants.credentials import CREDENTIALS
 from framework.utils.locators import Locator
@@ -46,11 +48,11 @@ class LoginPage(BasePage):
         try:
             self.wait.for_title_contains("Accounts Overview", timeout=5)
             return True
-        except Exception:
+        except TimeoutException:
             return False
 
     def get_accounts_overview_title(self) -> str:
         try:
-            return self.error_title.get_text()  # Reusing the same locator which shows "Accounts Overview"
-        except Exception:
+            return self.error_title.get_text()
+        except TimeoutException:
             return ""
