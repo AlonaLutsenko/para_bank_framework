@@ -1,2 +1,5 @@
-USERNAME = "john"
-PASSWORD = "demo"
+CREDENTIALS = {
+    "default": {"username": "john", "password": "demo"},
+    "admin": {"username": "admin_user", "password": "admin_pass"},
+    "guest": {"username": "guest_user", "password": "guest_pass"},
+}
