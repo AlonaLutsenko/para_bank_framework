@@ -14,8 +14,8 @@ class WebElementWrapper:
     def _get_element(self):
         try:
             return self.driver.find_element(self.locator)
-        except NoSuchElementException:
-            raise RuntimeError(f"Element not found: {self.locator}")
+        except NoSuchElementException as e:
+            print(f"Element not found: {self.locator}, {e}")
 
     def _wait_and_get_element(self):
         return self.wait.for_element_visible(self.locator)

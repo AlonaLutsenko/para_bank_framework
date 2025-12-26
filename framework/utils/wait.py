@@ -1,9 +1,10 @@
-from typing import Any, Callable, Iterable, Optional, Type, cast
+from typing import Any, Callable, Optional
 
 from selenium.common.exceptions import (
     NoSuchElementException,
     StaleElementReferenceException,
 )
+from selenium.types import WaitExcTypes
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -19,7 +20,7 @@ class Wait:
         driver: WebDriverWrapper,
         timeout: int = 10,
         poll_frequency: float = 0.5,
-        ignored_exceptions: Optional[Iterable[Type[Exception]]] = None,
+        ignored_exceptions: Optional[WaitExcTypes] = None,
     ):
         self.driver = driver
         self.timeout = timeout
@@ -39,9 +40,8 @@ class Wait:
             "driver": self.driver.driver,
             "timeout": timeout,
             "poll_frequency": self.poll_frequency,
+            "ignored_exceptions": self.ignored_exceptions,
         }
-        if self.ignored_exceptions is not None:
-            kwargs["ignored_exceptions"] = self.ignored_exceptions
         return WebDriverWait(**kwargs)
 
     def _get_wait(self, timeout: Optional[int] = None) -> WebDriverWait:
@@ -62,9 +62,9 @@ class Wait:
         wait = self._get_wait(timeout)
         return wait.until(EC.element_to_be_clickable(locator.as_tuple))
 
-    def for_element_invisible(self, locator: Locator, timeout: Optional[int] = None) -> bool:
+    def for_element_invisible(self, locator: Locator, timeout: Optional[int] = None) -> WebElement | bool:
         wait = self._get_wait(timeout)
-        return cast(bool, wait.until(EC.invisibility_of_element_located(locator.as_tuple)))
+        return wait.until(EC.invisibility_of_element_located(locator.as_tuple))
 
     def for_element_to_disappear(self, locator: Locator, timeout: Optional[int] = None) -> bool:
         wait = self._get_wait(timeout)
