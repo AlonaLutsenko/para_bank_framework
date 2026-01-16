@@ -242,14 +242,18 @@ class LoginPage(BasePage):
     def is_login_successful(self) -> bool:
         try:
             self.wait.for_title_contains("ParaBank", timeout=10)
-            current_url = self.driver.driver.current_url
-            if "overview" in current_url.lower() or "account" in current_url.lower():
+            current_url = self.driver.driver.current_url.lower()
+            if "overview" in current_url or "account" in current_url:
                 return True
-            if "login" not in current_url.lower():
+            if "login" not in current_url and "index" not in current_url:
                 return True
             return False
         except (TimeoutException, AttributeError):
-            return False
+            try:
+                current_url = self.driver.driver.current_url.lower()
+                return "overview" in current_url or "account" in current_url
+            except AttributeError:
+                return False
 
     def get_accounts_overview_title(self) -> Optional[str]:
         try:
