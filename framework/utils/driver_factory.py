@@ -19,6 +19,12 @@ class DriverFactory:
 
         if browser_name.lower() == "chrome":
             options = webdriver.ChromeOptions()
+
+            # Use custom Chrome binary if specified (e.g., chromium-browser in CI)
+            chrome_bin = os.getenv("CHROME_BIN")
+            if chrome_bin:
+                options.binary_location = chrome_bin
+
             if headless:
                 options.add_argument("--headless")
                 options.add_argument("--no-sandbox")
@@ -26,6 +32,15 @@ class DriverFactory:
                 options.add_argument("--disable-gpu")
             else:
                 options.add_argument("--start-maximized")
+
+            # Use custom ChromeDriver path if specified
+            chromedriver_path = os.getenv("CHROMEDRIVER_PATH")
+            if chromedriver_path:
+                from selenium.webdriver.chrome.service import Service
+
+                service = Service(chromedriver_path)
+                return webdriver.Chrome(service=service, options=options)
+
             return webdriver.Chrome(options=options)
 
         elif browser_name.lower() == "firefox":
