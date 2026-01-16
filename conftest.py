@@ -11,7 +11,8 @@ def driver(request):
     raw_driver = DriverFactory.create_driver(browser, headless=headless)
     driver = WebDriverWrapper(raw_driver)
     yield driver
-    driver.driver.quit()
+    if hasattr(driver, 'driver') and driver.driver:
+        driver.driver.quit()
 
 
 def pytest_addoption(parser):

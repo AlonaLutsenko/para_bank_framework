@@ -62,15 +62,22 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pytest-cov
 
-      - name: Run tests with coverage
+      - name: Run tests with coverage and Allure
         run: |
-          pytest --browser=chrome --headless --cov=framework --cov=ui --cov-report=xml --cov-report=term -v
+          pytest --browser=chrome --headless --cov=framework --cov=ui --cov-report=xml --cov-report=term --alluredir=allure-results -v
         env:
           CI: "true"
           CHROME_BIN: /usr/bin/chromium-browser
           CHROMEDRIVER_PATH: /usr/lib/chromium-browser/chromedriver
+
+      - name: Generate Allure Report
+        if: always()
+        uses: simple-elf/allure-report-action@master
+        with:
+          allure_results: allure-results
+          allure_history: allure-history
+          keep_reports: 20
 
       - name: Upload coverage reports
         uses: codecov/codecov-action@v4
@@ -81,11 +88,12 @@ jobs:
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
-        if: failure()
+        if: always()
         with:
           name: test-results
           path: |
             .pytest_cache/
             htmlcov/
+            allure-results/
           retention-days: 7
 
