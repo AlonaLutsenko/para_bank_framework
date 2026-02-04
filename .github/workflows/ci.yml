@@ -7,21 +7,20 @@ on:
     branches: ["main"]
 
 jobs:
-  lint:
-    name: Lint and Format Check
+  ci:
+    name: Lint and Tests
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
+    services:
+      selenium-hub:
+        image: selenium/standalone-chrome:4.28.1
+        ports:
+          - 4444:4444
+        options: >-
+          --shm-size=2g
 
     steps:
-      - &checkout
-        uses: actions/checkout@v4
-
-      - &setup_python
-        name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-          cache: "pip"
+      - uses: ./.github/actions/common-setup
 
       - name: Install linting dependencies
         run: |
@@ -36,22 +35,6 @@ jobs:
 
       - name: Lint with flake8
         run: flake8 .
-
-  pytest:
-    name: Run Tests
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    services:
-      selenium-hub:
-        image: selenium/standalone-chrome:4.28.1
-        ports:
-          - 4444:4444
-        options: >-
-          --shm-size=2g
-
-    steps:
-      - *checkout
-      - *setup_python
 
       - name: Install Python dependencies
         run: |
@@ -109,4 +92,3 @@ jobs:
             htmlcov/
             allure-results/
           retention-days: 7
-
