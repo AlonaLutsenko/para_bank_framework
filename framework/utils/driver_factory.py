@@ -2,6 +2,8 @@ import os
 
 from selenium import webdriver
 
+from framework.utils.appsettings import get_profile, get_setting
+
 
 class DriverFactory:
     @staticmethod
@@ -13,9 +15,11 @@ class DriverFactory:
             browser_name: Name of the browser ('chrome' or 'firefox')
             headless: Whether to run in headless mode. If None, auto-detects from CI environment.
         """
-        # Auto-detect headless mode from CI environment if not explicitly set
+        # Auto-detect headless mode from settings/CI if not explicitly set
         if headless is None:
-            headless = os.getenv("CI") == "true" or os.getenv("GITHUB_ACTIONS") == "true"
+            is_ci = os.getenv("CI") == "true" or os.getenv("GITHUB_ACTIONS") == "true"
+            profile = get_profile("ci" if is_ci else "local")
+            headless = profile.get("headless", True if is_ci else False)
 
         if browser_name.lower() == "chrome":
             options = webdriver.ChromeOptions()
@@ -32,6 +36,9 @@ class DriverFactory:
                 options.add_argument("--disable-gpu")
             else:
                 options.add_argument("--start-maximized")
+
+            for arg in get_setting("chrome", "args", default=[]):
+                options.add_argument(arg)
 
             remote_url = os.getenv("SELENIUM_REMOTE_URL")
             if remote_url:

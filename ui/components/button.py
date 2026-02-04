@@ -11,10 +11,20 @@ class Button(BaseComponent):
     def __init__(self, driver: WebDriverWrapper, locator: Locator):
         super().__init__(driver, locator)
 
+    def click(self):
+        self.element.click()
+
     def is_enabled(self) -> bool:
         try:
             element = self.element.wait_for_clickable(timeout=2)
             return element.is_enabled()
+        except TimeoutException:
+            return False
+
+    def is_clickable(self) -> bool:
+        try:
+            self.element.wait_for_clickable(timeout=2)
+            return True
         except TimeoutException:
             return False
 

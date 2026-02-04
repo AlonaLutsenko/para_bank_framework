@@ -33,8 +33,8 @@ class WebElementWrapper:
 
     def is_displayed(self) -> bool:
         try:
-            element = self.wait.for_element_present(self.locator, timeout=2)
-            return element.is_displayed()
+            self.wait.for_element_visible(self.locator, timeout=2)
+            return True
         except TimeoutException:
             return False
 

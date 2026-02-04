@@ -1,21 +1,18 @@
-import allure
-
 from framework.constants.urls import BASE_URL
+from framework.utils.allure_helper import case, step
 from ui.pages.login_page import LoginPage
 
 
-@allure.epic("Login Page")
-@allure.feature("Form Interaction")
-@allure.story("Input Field Operations")
+@case("Login Page", "Form Interaction", "Input Field Operations")
 def test_login_form_interaction(driver):
-    with allure.step("Open login page"):
+    with step("Open login page"):
         page = LoginPage(driver)
         page.open(BASE_URL)
 
-    with allure.step("Verify login form is ready"):
+    with step("Verify login form is ready"):
         assert page.can_login(), "Should be able to login"
 
-    with allure.step("Test input field operations"):
+    with step("Test input field operations"):
         page.enter_username("test_user")
         assert page.get_username_value() == "test_user", "Username value should be set correctly"
 
@@ -26,15 +23,13 @@ def test_login_form_interaction(driver):
         assert page.get_username_value() == "new_user", "Username should be updated after clear_and_type"
 
 
-@allure.epic("Login Page")
-@allure.feature("Content Retrieval")
-@allure.story("Text Elements")
+@case("Login Page", "Content Retrieval", "Text Elements")
 def test_text_elements_retrieval(driver):
-    with allure.step("Open login page"):
+    with step("Open login page"):
         page = LoginPage(driver)
         page.open(BASE_URL)
 
-    with allure.step("Retrieve and verify text elements"):
+    with step("Retrieve and verify text elements"):
         caption = page.get_caption_text()
         assert caption is not None, "Caption text should not be None"
 

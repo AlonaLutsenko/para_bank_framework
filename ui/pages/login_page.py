@@ -10,6 +10,7 @@ from framework.utils.web_driver_wrapper import WebDriverWrapper
 from framework.utils.web_element_wrapper import WebElementWrapper
 from ui.components.button import Button
 from ui.components.input import Input
+from ui.components.text import Text
 
 
 class LoginPage(BasePage):
@@ -85,7 +86,7 @@ class LoginPage(BasePage):
 
     @cached_property
     def error_title(self):
-        return WebElementWrapper(self.driver, self.Locators.ERROR_TITLE)
+        return Text(self.driver, self.Locators.ERROR_TITLE)
 
     # Main panels
     @cached_property
@@ -119,7 +120,7 @@ class LoginPage(BasePage):
 
     @cached_property
     def caption(self):
-        return WebElementWrapper(self.driver, self.Locators.CAPTION)
+        return Text(self.driver, self.Locators.CAPTION)
 
     # Navigation buttons
     @cached_property
@@ -171,7 +172,7 @@ class LoginPage(BasePage):
     # Right panel - services
     @cached_property
     def atm_services_caption(self):
-        return WebElementWrapper(self.driver, self.Locators.ATM_SERVICES_CAPTION)
+        return Text(self.driver, self.Locators.ATM_SERVICES_CAPTION)
 
     @cached_property
     def withdraw_funds_link(self):
@@ -191,7 +192,7 @@ class LoginPage(BasePage):
 
     @cached_property
     def online_services_caption(self):
-        return WebElementWrapper(self.driver, self.Locators.ONLINE_SERVICES_CAPTION)
+        return Text(self.driver, self.Locators.ONLINE_SERVICES_CAPTION)
 
     @cached_property
     def bill_pay_link(self):
@@ -208,23 +209,23 @@ class LoginPage(BasePage):
     # Right panel - news
     @cached_property
     def latest_news_heading(self):
-        return WebElementWrapper(self.driver, self.Locators.LATEST_NEWS_HEADING)
+        return Text(self.driver, self.Locators.LATEST_NEWS_HEADING)
 
     @cached_property
     def news_date(self):
-        return WebElementWrapper(self.driver, self.Locators.NEWS_DATE)
+        return Text(self.driver, self.Locators.NEWS_DATE)
 
     @cached_property
     def news_item_reopened(self):
-        return WebElementWrapper(self.driver, self.Locators.NEWS_ITEM_REOPENED)
+        return Text(self.driver, self.Locators.NEWS_ITEM_REOPENED)
 
     @cached_property
     def news_item_bill_pay(self):
-        return WebElementWrapper(self.driver, self.Locators.NEWS_ITEM_BILL_PAY)
+        return Text(self.driver, self.Locators.NEWS_ITEM_BILL_PAY)
 
     @cached_property
     def news_item_transfers(self):
-        return WebElementWrapper(self.driver, self.Locators.NEWS_ITEM_TRANSFERS)
+        return Text(self.driver, self.Locators.NEWS_ITEM_TRANSFERS)
 
     # Core login methods
     def login(self, user_type: str = "default"):
@@ -274,17 +275,11 @@ class LoginPage(BasePage):
                 return False
 
     def get_accounts_overview_title(self) -> Optional[str]:
-        try:
-            return self.error_title.get_text()
-        except TimeoutException:
-            return None
+        return self.error_title.get_text()
 
     # Verification methods
     def is_page_loaded(self) -> bool:
-        try:
-            return self.main_panel.is_displayed() and self.login_panel.is_displayed()
-        except TimeoutException:
-            return False
+        return self.main_panel.is_displayed() and self.login_panel.is_displayed()
 
     def is_logo_displayed(self) -> bool:
         return self.logo.is_displayed()
@@ -321,14 +316,9 @@ class LoginPage(BasePage):
         return self.register_link.is_displayed()
 
     def is_navigation_visible(self) -> bool:
-        try:
-            return (
-                self.home_button.is_displayed()
-                and self.about_button.is_displayed()
-                and self.contact_button.is_displayed()
-            )
-        except TimeoutException:
-            return False
+        return (
+            self.home_button.is_displayed() and self.about_button.is_displayed() and self.contact_button.is_displayed()
+        )
 
     def is_home_button_ready(self) -> bool:
         return self.home_button.is_displayed() and self.home_button.is_enabled()
@@ -340,14 +330,11 @@ class LoginPage(BasePage):
         return self.contact_button.is_displayed() and self.contact_button.is_enabled()
 
     def is_right_panel_visible(self) -> bool:
-        try:
-            return (
-                self.right_panel.is_displayed()
-                and self.atm_services_caption.is_displayed()
-                and self.latest_news_heading.is_displayed()
-            )
-        except TimeoutException:
-            return False
+        return (
+            self.right_panel.is_displayed()
+            and self.atm_services_caption.is_displayed()
+            and self.latest_news_heading.is_displayed()
+        )
 
     def is_right_panel_displayed(self) -> bool:
         return self.right_panel.is_displayed()
@@ -362,14 +349,11 @@ class LoginPage(BasePage):
         return self.latest_news_heading.is_displayed()
 
     def is_left_menu_visible(self) -> bool:
-        try:
-            return (
-                self.solutions_menu.is_displayed()
-                and self.about_us_link.is_displayed()
-                and self.services_link.is_displayed()
-            )
-        except TimeoutException:
-            return False
+        return (
+            self.solutions_menu.is_displayed()
+            and self.about_us_link.is_displayed()
+            and self.services_link.is_displayed()
+        )
 
     def is_solutions_menu_displayed(self) -> bool:
         return self.solutions_menu.is_displayed()
@@ -394,34 +378,19 @@ class LoginPage(BasePage):
 
     # Text retrieval methods
     def get_caption_text(self) -> Optional[str]:
-        try:
-            return self.caption.get_text()
-        except TimeoutException:
-            return None
+        return self.caption.get_text()
 
     def get_atm_services_caption(self) -> Optional[str]:
-        try:
-            return self.atm_services_caption.get_text()
-        except TimeoutException:
-            return None
+        return self.atm_services_caption.get_text()
 
     def get_online_services_caption(self) -> Optional[str]:
-        try:
-            return self.online_services_caption.get_text()
-        except TimeoutException:
-            return None
+        return self.online_services_caption.get_text()
 
     def get_latest_news_heading(self) -> Optional[str]:
-        try:
-            return self.latest_news_heading.get_text()
-        except TimeoutException:
-            return None
+        return self.latest_news_heading.get_text()
 
     def get_news_date(self) -> Optional[str]:
-        try:
-            return self.news_date.get_text()
-        except TimeoutException:
-            return None
+        return self.news_date.get_text()
 
     def get_news_item_text(self, news_item: str) -> Optional[str]:
         news_map = {
@@ -429,48 +398,36 @@ class LoginPage(BasePage):
             "bill_pay": self.news_item_bill_pay,
             "transfers": self.news_item_transfers,
         }
-        try:
-            if news_item in news_map:
-                return news_map[news_item].get_text()
-            return None
-        except TimeoutException:
-            return None
+        if news_item in news_map:
+            return news_map[news_item].get_text()
+        return None
 
     # Service links verification
     def are_atm_services_visible(self) -> bool:
-        try:
-            visible_count = 0
-            if self.withdraw_funds_link.is_displayed():
-                visible_count += 1
-            if self.transfer_funds_link.is_displayed():
-                visible_count += 1
-            if self.check_balances_link.is_displayed():
-                visible_count += 1
-            if self.make_deposits_link.is_displayed():
-                visible_count += 1
-            return visible_count >= 3
-        except TimeoutException:
-            return False
+        visible_count = 0
+        if self.withdraw_funds_link.is_displayed():
+            visible_count += 1
+        if self.transfer_funds_link.is_displayed():
+            visible_count += 1
+        if self.check_balances_link.is_displayed():
+            visible_count += 1
+        if self.make_deposits_link.is_displayed():
+            visible_count += 1
+        return visible_count >= 3
 
     def are_online_services_visible(self) -> bool:
-        try:
-            return (
-                self.bill_pay_link.is_displayed()
-                and self.account_history_link.is_displayed()
-                and self.online_transfer_funds_link.is_displayed()
-            )
-        except TimeoutException:
-            return False
+        return (
+            self.bill_pay_link.is_displayed()
+            and self.account_history_link.is_displayed()
+            and self.online_transfer_funds_link.is_displayed()
+        )
 
     def are_news_items_visible(self) -> bool:
-        try:
-            return (
-                self.news_item_reopened.is_displayed()
-                and self.news_item_bill_pay.is_displayed()
-                and self.news_item_transfers.is_displayed()
-            )
-        except TimeoutException:
-            return False
+        return (
+            self.news_item_reopened.is_displayed()
+            and self.news_item_bill_pay.is_displayed()
+            and self.news_item_transfers.is_displayed()
+        )
 
     # Utility methods
     def get_all_panels_visible(self) -> dict:

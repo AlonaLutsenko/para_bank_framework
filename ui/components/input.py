@@ -15,11 +15,8 @@ class Input(BaseComponent):
         self.element.type(text)
 
     def clear(self):
-        try:
-            element = self.element.wait_for_visible(timeout=2)
-            element.clear()
-        except TimeoutException:
-            pass
+        element = self.element.wait_for_visible(timeout=2)
+        element.clear()
 
     def clear_and_type(self, text: str):
         self.clear()
