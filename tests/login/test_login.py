@@ -31,9 +31,9 @@ def test_login_invalid_credentials(driver):
         page.open(BASE_URL)
 
     with allure.step("Enter invalid credentials"):
-        page.username_input.type("invalid_user")
-        page.password_input.type("invalid_password")
-        page.login_button.click()
+        page.enter_username("invalid_user")
+        page.enter_password("invalid_password")
+        page.submit_login()
 
     with allure.step("Verify error message is displayed"):
         error_message = page.get_error_message()
@@ -50,9 +50,9 @@ def test_login_with_empty_fields(driver):
         page.open(BASE_URL)
 
     with allure.step("Clear all fields and submit"):
-        page.username_input.clear()
-        page.password_input.clear()
-        page.login_button.click()
+        page.clear_username()
+        page.clear_password()
+        page.submit_login()
 
     with allure.step("Verify error message is displayed"):
         error_message = page.get_error_message()

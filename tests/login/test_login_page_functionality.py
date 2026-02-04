@@ -16,14 +16,14 @@ def test_login_form_interaction(driver):
         assert page.can_login(), "Should be able to login"
 
     with allure.step("Test input field operations"):
-        page.username_input.type("test_user")
-        assert page.username_input.get_value() == "test_user", "Username value should be set correctly"
+        page.enter_username("test_user")
+        assert page.get_username_value() == "test_user", "Username value should be set correctly"
 
-        page.username_input.clear()
-        assert page.username_input.get_value() == "", "Username should be cleared"
+        page.clear_username()
+        assert page.get_username_value() == "", "Username should be cleared"
 
-        page.username_input.clear_and_type("new_user")
-        assert page.username_input.get_value() == "new_user", "Username should be updated after clear_and_type"
+        page.clear_and_type_username("new_user")
+        assert page.get_username_value() == "new_user", "Username should be updated after clear_and_type"
 
 
 @allure.epic("Login Page")

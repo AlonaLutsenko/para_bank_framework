@@ -40,11 +40,8 @@ class Input(BaseComponent):
             return None
 
     def is_enabled(self) -> bool:
-        try:
-            element = self.element.wait_for_clickable(timeout=2)
-            return element.is_enabled()
-        except TimeoutException:
-            return False
+        element = self.element.wait_for_clickable(timeout=2)
+        return element.is_enabled()
 
     def is_readonly(self) -> bool:
         try:

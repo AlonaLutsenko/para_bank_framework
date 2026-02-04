@@ -233,11 +233,29 @@ class LoginPage(BasePage):
         self.password_input.type(creds["password"])
         self.login_button.click()
 
+    def enter_username(self, username: str) -> None:
+        self.username_input.type(username)
+
+    def enter_password(self, password: str) -> None:
+        self.password_input.type(password)
+
+    def submit_login(self) -> None:
+        self.login_button.click()
+
+    def clear_username(self) -> None:
+        self.username_input.clear()
+
+    def clear_password(self) -> None:
+        self.password_input.clear()
+
+    def clear_and_type_username(self, username: str) -> None:
+        self.username_input.clear_and_type(username)
+
+    def get_username_value(self) -> Optional[str]:
+        return self.username_input.get_value()
+
     def get_error_message(self) -> Optional[str]:
-        try:
-            return self.error_title.get_text()
-        except TimeoutException:
-            return None
+        return self.error_title.get_text()
 
     def is_login_successful(self) -> bool:
         try:
@@ -272,14 +290,35 @@ class LoginPage(BasePage):
         return self.logo.is_displayed()
 
     def is_login_form_visible(self) -> bool:
-        try:
-            return (
-                self.username_input.is_displayed()
-                and self.password_input.is_displayed()
-                and self.login_button.is_displayed()
-            )
-        except TimeoutException:
-            return False
+        return (
+            self.username_input.is_displayed()
+            and self.password_input.is_displayed()
+            and self.login_button.is_displayed()
+        )
+
+    def is_username_input_displayed(self) -> bool:
+        return self.username_input.is_displayed()
+
+    def is_password_input_displayed(self) -> bool:
+        return self.password_input.is_displayed()
+
+    def is_login_button_displayed(self) -> bool:
+        return self.login_button.is_displayed()
+
+    def is_login_button_enabled(self) -> bool:
+        return self.login_button.is_enabled()
+
+    def is_username_input_enabled(self) -> bool:
+        return self.username_input.is_enabled()
+
+    def is_password_input_enabled(self) -> bool:
+        return self.password_input.is_enabled()
+
+    def is_forgot_login_link_displayed(self) -> bool:
+        return self.forgot_login_link.is_displayed()
+
+    def is_register_link_displayed(self) -> bool:
+        return self.register_link.is_displayed()
 
     def is_navigation_visible(self) -> bool:
         try:
@@ -291,6 +330,15 @@ class LoginPage(BasePage):
         except TimeoutException:
             return False
 
+    def is_home_button_ready(self) -> bool:
+        return self.home_button.is_displayed() and self.home_button.is_enabled()
+
+    def is_about_button_ready(self) -> bool:
+        return self.about_button.is_displayed() and self.about_button.is_enabled()
+
+    def is_contact_button_ready(self) -> bool:
+        return self.contact_button.is_displayed() and self.contact_button.is_enabled()
+
     def is_right_panel_visible(self) -> bool:
         try:
             return (
@@ -301,6 +349,18 @@ class LoginPage(BasePage):
         except TimeoutException:
             return False
 
+    def is_right_panel_displayed(self) -> bool:
+        return self.right_panel.is_displayed()
+
+    def is_atm_services_caption_displayed(self) -> bool:
+        return self.atm_services_caption.is_displayed()
+
+    def is_online_services_caption_displayed(self) -> bool:
+        return self.online_services_caption.is_displayed()
+
+    def is_latest_news_heading_displayed(self) -> bool:
+        return self.latest_news_heading.is_displayed()
+
     def is_left_menu_visible(self) -> bool:
         try:
             return (
@@ -310,6 +370,24 @@ class LoginPage(BasePage):
             )
         except TimeoutException:
             return False
+
+    def is_solutions_menu_displayed(self) -> bool:
+        return self.solutions_menu.is_displayed()
+
+    def is_about_us_link_displayed(self) -> bool:
+        return self.about_us_link.is_displayed()
+
+    def is_services_link_displayed(self) -> bool:
+        return self.services_link.is_displayed()
+
+    def is_products_link_displayed(self) -> bool:
+        return self.products_link.is_displayed()
+
+    def is_locations_link_displayed(self) -> bool:
+        return self.locations_link.is_displayed()
+
+    def is_admin_page_link_displayed(self) -> bool:
+        return self.admin_page_link.is_displayed()
 
     def can_login(self) -> bool:
         return self.is_login_form_visible() and self.login_button.is_enabled()
