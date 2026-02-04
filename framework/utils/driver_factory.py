@@ -33,6 +33,10 @@ class DriverFactory:
             else:
                 options.add_argument("--start-maximized")
 
+            remote_url = os.getenv("SELENIUM_REMOTE_URL")
+            if remote_url:
+                return webdriver.Remote(command_executor=remote_url, options=options)
+
             # Use custom ChromeDriver path if specified
             chromedriver_path = os.getenv("CHROMEDRIVER_PATH")
             if chromedriver_path:
