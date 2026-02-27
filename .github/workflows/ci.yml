@@ -72,10 +72,11 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r requirements.txt pytest-html
 
       - name: Run tests
         run: |
+          mkdir -p reports
           pytest \
             --browser=chrome \
             --headless \
@@ -84,8 +85,15 @@ jobs:
             --cov-report=xml:coverage.xml \
             --cov-report=term \
             --junitxml=pytest-junit.xml \
+            --html=reports/report.html \
             --alluredir=allure-results \
             -v
         env:
           CI: "true"
           SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
+
+      - name: Upload HTML report
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytest-html-report
+          path: reports/report.html

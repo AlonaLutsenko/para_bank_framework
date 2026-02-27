@@ -1,5 +1,5 @@
-from framework.constants.urls import BASE_URL
 from framework.utils.allure_helper import case, step
+from framework.utils.urls import get_base_url
 from ui.pages.login_page import LoginPage
 
 
@@ -7,7 +7,7 @@ from ui.pages.login_page import LoginPage
 def test_login_form_interaction(driver):
     with step("Open login page"):
         page = LoginPage(driver)
-        page.open(BASE_URL)
+        page.open(get_base_url())
 
     with step("Verify login form is ready"):
         assert page.can_login(), "Should be able to login"
@@ -27,7 +27,7 @@ def test_login_form_interaction(driver):
 def test_text_elements_retrieval(driver):
     with step("Open login page"):
         page = LoginPage(driver)
-        page.open(BASE_URL)
+        page.open(get_base_url())
 
     with step("Retrieve and verify text elements"):
         caption = page.get_caption_text()

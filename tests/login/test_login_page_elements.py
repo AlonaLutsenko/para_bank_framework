@@ -1,5 +1,5 @@
-from framework.constants.urls import BASE_URL
 from framework.utils.allure_helper import case, step
+from framework.utils.urls import get_base_url
 from ui.pages.login_page import LoginPage
 
 
@@ -7,7 +7,7 @@ from ui.pages.login_page import LoginPage
 def test_page_structure_and_elements(driver):
     with step("Open login page"):
         page = LoginPage(driver)
-        page.open(BASE_URL)
+        page.open(get_base_url())
 
     with step("Verify page structure"):
         assert page.is_page_loaded(), "Login page did not load properly"
@@ -23,7 +23,7 @@ def test_page_structure_and_elements(driver):
 def test_login_form_elements(driver):
     with step("Open login page"):
         page = LoginPage(driver)
-        page.open(BASE_URL)
+        page.open(get_base_url())
 
     with step("Verify login form elements"):
         assert page.is_username_input_displayed(), "Username input is not displayed"
@@ -40,7 +40,7 @@ def test_login_form_elements(driver):
 def test_navigation_elements(driver):
     with step("Open login page"):
         page = LoginPage(driver)
-        page.open(BASE_URL)
+        page.open(get_base_url())
 
     with step("Verify navigation buttons"):
         assert page.is_home_button_ready(), "Home button should be displayed and enabled"
@@ -52,7 +52,7 @@ def test_navigation_elements(driver):
 def test_left_menu_elements(driver):
     with step("Open login page"):
         page = LoginPage(driver)
-        page.open(BASE_URL)
+        page.open(get_base_url())
 
     with step("Verify left menu elements"):
         assert page.is_solutions_menu_displayed(), "Solutions menu is not displayed"
@@ -67,7 +67,7 @@ def test_left_menu_elements(driver):
 def test_right_panel_services(driver):
     with step("Open login page"):
         page = LoginPage(driver)
-        page.open(BASE_URL)
+        page.open(get_base_url())
 
     with step("Verify right panel services"):
         assert page.is_right_panel_displayed(), "Right panel is not displayed"
@@ -80,7 +80,7 @@ def test_right_panel_services(driver):
 def test_news_section(driver):
     with step("Open login page"):
         page = LoginPage(driver)
-        page.open(BASE_URL)
+        page.open(get_base_url())
 
     with step("Verify news section"):
         assert page.is_latest_news_heading_displayed(), "Latest News heading is not displayed"

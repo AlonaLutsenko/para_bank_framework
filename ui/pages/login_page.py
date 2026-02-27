@@ -4,7 +4,7 @@ from typing import Optional
 from selenium.common.exceptions import TimeoutException
 
 from framework.base_page import BasePage
-from framework.constants.credentials import CREDENTIALS
+from framework.utils.credentials import get_credentials
 from framework.utils.locators import Locator
 from framework.utils.web_driver_wrapper import WebDriverWrapper
 from framework.utils.web_element_wrapper import WebElementWrapper
@@ -229,7 +229,7 @@ class LoginPage(BasePage):
 
     # Core login methods
     def login(self, user_type: str = "default"):
-        creds = CREDENTIALS[user_type]
+        creds = get_credentials(user_type)
         self.username_input.type(creds["username"])
         self.password_input.type(creds["password"])
         self.login_button.click()
