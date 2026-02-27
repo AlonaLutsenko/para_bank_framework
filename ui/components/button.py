@@ -1,7 +1,6 @@
 from typing import Optional
 
-from selenium.common.exceptions import TimeoutException
-
+from framework.utils.decorators import return_on_timeout
 from framework.utils.locators import Locator
 from framework.utils.web_driver_wrapper import WebDriverWrapper
 from ui.components.base_component import BaseComponent
@@ -14,26 +13,20 @@ class Button(BaseComponent):
     def click(self):
         self.element.click()
 
+    @return_on_timeout(False)
     def is_enabled(self) -> bool:
-        try:
-            element = self.element.wait_for_clickable(timeout=2)
-            return element.is_enabled()
-        except TimeoutException:
-            return False
+        element = self.element.wait_for_clickable(timeout=2)
+        return element.is_enabled()
 
+    @return_on_timeout(False)
     def is_clickable(self) -> bool:
-        try:
-            self.element.wait_for_clickable(timeout=2)
-            return True
-        except TimeoutException:
-            return False
+        self.element.wait_for_clickable(timeout=2)
+        return True
 
     def is_disabled(self) -> bool:
         return not self.is_enabled()
 
+    @return_on_timeout(None)
     def get_value(self) -> Optional[str]:
-        try:
-            element = self.element.wait_for_visible(timeout=2)
-            return element.get_attribute("value")
-        except TimeoutException:
-            return None
+        element = self.element.wait_for_visible(timeout=2)
+        return element.get_attribute("value")
