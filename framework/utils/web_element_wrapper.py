@@ -1,4 +1,7 @@
+from typing import Optional
+
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.webdriver.remote.webelement import WebElement
 
 from framework.utils.locators import Locator
 from framework.utils.wait import Wait
@@ -32,7 +35,6 @@ class WebElementWrapper:
         return self.wait.for_element_visible(self.locator).text
 
     def is_present(self) -> bool:
-        """Check if element exists in the DOM. Does not verify visibility."""
         try:
             self.wait.for_element_present(self.locator, timeout=2)
             return True
@@ -40,18 +42,17 @@ class WebElementWrapper:
             return False
 
     def is_displayed(self) -> bool:
-        """Check if element is visible on the page (has dimensions, not hidden)."""
         try:
             element = self.wait.for_element_present(self.locator, timeout=2)
             return element.is_displayed()
         except TimeoutException:
             return False
 
-    def wait_for_visible(self, timeout: int = None):
+    def wait_for_visible(self, timeout: Optional[int] = None) -> WebElement:
         return self.wait.for_element_visible(self.locator, timeout=timeout)
 
-    def wait_for_clickable(self, timeout: int = None):
+    def wait_for_clickable(self, timeout: Optional[int] = None) -> WebElement:
         return self.wait.for_element_clickable(self.locator, timeout=timeout)
 
-    def wait_for_invisible(self, timeout: int = None) -> bool:
+    def wait_for_invisible(self, timeout: Optional[int] = None) -> bool:
         return self.wait.for_element_invisible(self.locator, timeout=timeout)
