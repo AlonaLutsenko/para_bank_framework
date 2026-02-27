@@ -31,10 +31,19 @@ class WebElementWrapper:
     def get_text(self) -> str:
         return self.wait.for_element_visible(self.locator).text
 
-    def is_displayed(self) -> bool:
+    def is_present(self) -> bool:
+        """Check if element exists in the DOM. Does not verify visibility."""
         try:
-            self.wait.for_element_visible(self.locator, timeout=2)
+            self.wait.for_element_present(self.locator, timeout=2)
             return True
+        except TimeoutException:
+            return False
+
+    def is_displayed(self) -> bool:
+        """Check if element is visible on the page (has dimensions, not hidden)."""
+        try:
+            element = self.wait.for_element_present(self.locator, timeout=2)
+            return element.is_displayed()
         except TimeoutException:
             return False
 

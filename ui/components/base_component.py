@@ -13,6 +13,9 @@ class BaseComponent:
     def element(self) -> WebElementWrapper:
         return self._element
 
+    def is_present(self) -> bool:
+        return self._element.is_present()
+
     def is_displayed(self) -> bool:
         return self._element.is_displayed()
 
