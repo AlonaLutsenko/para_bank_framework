@@ -39,6 +39,6 @@ def get_credentials(user_type: str = "default") -> Dict[str, str]:
 
     raise ValueError(
         f"No credentials found for '{user_type}'. "
-        "Set PARABANK_USERNAME_DEFAULT and PARABANK_PASSWORD_DEFAULT in .env (see .env.example), "
+        "Set PARABANK_USERNAME_DEFAULT and PARABANK_PASSWORD_DEFAULT in .env, "
         "or add them as GitHub Secrets for CI."
     )
