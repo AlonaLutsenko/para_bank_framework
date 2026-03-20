@@ -17,7 +17,6 @@ _ENV_PASS = "PARABANK_PASSWORD_{}"
 
 
 def _credentials_from_env() -> Dict[str, Dict[str, str]]:
-    """Build credentials dict from environment variables."""
     creds = {}
     for user_type in _USER_TYPES:
         suffix = user_type.upper()
@@ -29,16 +28,6 @@ def _credentials_from_env() -> Dict[str, Dict[str, str]]:
 
 
 def get_credentials(user_type: str = "default") -> Dict[str, str]:
-    """
-    Get credentials for the given user type.
-
-    Priority:
-    1. Environment variables (PARABANK_USERNAME_DEFAULT, PARABANK_PASSWORD_DEFAULT, etc.)
-    2. appsettings.json "credentials" section (if present, not recommended for secrets)
-
-    Never store real credentials in appsettings.json or in code.
-    Use .env locally (see .env.example) and GitHub Secrets/Variables for CI.
-    """
     env_creds = _credentials_from_env()
     if user_type in env_creds:
         return env_creds[user_type]
