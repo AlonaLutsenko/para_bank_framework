@@ -22,13 +22,11 @@ class Input(BaseComponent):
 
     @return_on_timeout(None)
     def get_value(self) -> Optional[str]:
-        element = self.element.wait_for_visible(timeout=2)
-        return element.get_attribute("value")
+        return self.element.get_attribute("value", timeout=2)
 
     @return_on_timeout(None)
     def get_placeholder(self) -> Optional[str]:
-        element = self.element.wait_for_visible(timeout=2)
-        return element.get_attribute("placeholder")
+        return self.element.get_attribute("placeholder", timeout=2)
 
     @return_on_timeout(False)
     def is_enabled(self) -> bool:
@@ -37,5 +35,4 @@ class Input(BaseComponent):
 
     @return_on_timeout(False)
     def is_readonly(self) -> bool:
-        element = self.element.wait_for_visible(timeout=2)
-        return element.get_attribute("readonly") is not None
+        return self.element.get_attribute("readonly", timeout=2) is not None

@@ -21,12 +21,16 @@ class WebElementWrapper:
         self.wait.for_element_clickable(self.locator).clear()
 
     def type(self, text: str):
-        element = self.wait.for_element_visible(self.locator)
+        element = self.wait.for_element_present(self.locator)
         element.clear()
         element.send_keys(text)
 
     def get_text(self) -> str:
-        return self.wait.for_element_visible(self.locator).text
+        return self.wait.for_element_present(self.locator).text
+
+    def get_attribute(self, name: str, timeout: Optional[int] = None) -> Optional[str]:
+        element = self.wait.for_element_present(self.locator, timeout=timeout)
+        return element.get_attribute(name)
 
     def is_present(self) -> bool:
         try:

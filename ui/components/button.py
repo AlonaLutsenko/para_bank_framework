@@ -28,5 +28,4 @@ class Button(BaseComponent):
 
     @return_on_timeout(None)
     def get_value(self) -> Optional[str]:
-        element = self.element.wait_for_visible(timeout=2)
-        return element.get_attribute("value")
+        return self.element.get_attribute("value", timeout=2)
