@@ -74,14 +74,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt pytest-html
 
-      - name: Set up credentials
-        run: |
-          echo "PARABANK_USERNAME_DEFAULT=${PARABANK_USERNAME_DEFAULT:-john}" >> .env
-          echo "PARABANK_PASSWORD_DEFAULT=${PARABANK_PASSWORD_DEFAULT:-demo}" >> .env
-        env:
-          PARABANK_USERNAME_DEFAULT: ${{ secrets.PARABANK_USERNAME_DEFAULT }}
-          PARABANK_PASSWORD_DEFAULT: ${{ secrets.PARABANK_PASSWORD_DEFAULT }}
-
       - name: Run tests
         run: |
           mkdir -p reports
@@ -99,6 +91,8 @@ jobs:
         env:
           CI: "true"
           SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
+          PARABANK_USERNAME_DEFAULT: ${{ secrets.PARABANK_USERNAME_DEFAULT }}
+          PARABANK_PASSWORD_DEFAULT: ${{ secrets.PARABANK_PASSWORD_DEFAULT }}
 
       - name: Upload HTML report
         uses: actions/upload-artifact@v6
