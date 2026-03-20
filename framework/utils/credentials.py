@@ -4,8 +4,6 @@ from typing import Dict
 
 from dotenv import load_dotenv
 
-from framework.utils.appsettings import get_setting
-
 # Load .env from project root (parent of framework/)
 _env_path = Path(__file__).resolve().parents[2] / ".env"
 load_dotenv(_env_path)
@@ -32,19 +30,15 @@ def get_credentials(user_type: str = "default") -> Dict[str, str]:
     if user_type in env_creds:
         return env_creds[user_type]
 
-    file_creds = get_setting("credentials", default={})
-    if user_type in file_creds:
-        return file_creds[user_type]
-
     if env_creds:
         raise ValueError(
             f"Unknown user_type: '{user_type}'. "
-            f"Available from env: {list(env_creds.keys())}. "
+            f"Available: {list(env_creds.keys())}. "
             f"Set PARABANK_USERNAME_{user_type.upper()} and PARABANK_PASSWORD_{user_type.upper()}."
         )
 
     raise ValueError(
         f"No credentials found for '{user_type}'. "
         "Set PARABANK_USERNAME_DEFAULT and PARABANK_PASSWORD_DEFAULT in .env (see .env.example), "
-        "or add them as GitHub Secrets/Variables for CI."
+        "or add them as GitHub Secrets for CI."
     )
