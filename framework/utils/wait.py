@@ -68,7 +68,8 @@ class Wait:
 
     def for_element_to_disappear(self, locator: Locator, timeout: Optional[int] = None) -> bool:
         wait = self._get_wait(timeout)
-        return wait.until(EC.staleness_of(self.driver.find_element(*locator.as_tuple)))
+        element = self.driver.driver.find_element(*locator.as_tuple)
+        return wait.until(EC.staleness_of(element))
 
     def for_text_in_element(self, locator: Locator, text: str, timeout: Optional[int] = None) -> bool:
         wait = self._get_wait(timeout)

@@ -67,6 +67,7 @@ class LoginPage(BasePage):
         NEWS_ITEM_TRANSFERS = Locator.css("ul.events a[href*='news.htm#4']")
 
         ERROR_TITLE = Locator.class_name("title")
+        ACCOUNTS_OVERVIEW_TITLE = Locator.xpath("//h1[contains(.,'Account')]")
 
     def __init__(self, driver: WebDriverWrapper):
         super().__init__(driver)
@@ -275,7 +276,7 @@ class LoginPage(BasePage):
                 return False
 
     def get_accounts_overview_title(self) -> Optional[str]:
-        return self.error_title.get_text()
+        return Text(self.driver, self.Locators.ACCOUNTS_OVERVIEW_TITLE).get_text()
 
     # Verification methods
     def is_page_loaded(self) -> bool:

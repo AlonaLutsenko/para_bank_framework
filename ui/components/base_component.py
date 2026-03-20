@@ -15,6 +15,7 @@ class BaseComponent:
 
     @property
     def element(self) -> WebElementWrapper:
+        self._element.wait_for_visible(5)
         return self._element
 
     def is_present(self) -> bool:

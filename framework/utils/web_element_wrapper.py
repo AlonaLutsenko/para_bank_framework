@@ -1,6 +1,6 @@
 from typing import Optional
 
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.remote.webelement import WebElement
 
 from framework.utils.locators import Locator
@@ -14,17 +14,11 @@ class WebElementWrapper:
         self.locator = locator
         self.wait = Wait(driver)
 
-    def _get_element(self):
-        try:
-            return self.driver.find_element(self.locator)
-        except NoSuchElementException as e:
-            print(f"Element not found: {self.locator}, {e}")
-
-    def _wait_and_get_element(self):
-        return self.wait.for_element_visible(self.locator)
-
     def click(self):
         self.wait.for_element_clickable(self.locator).click()
+
+    def clear(self):
+        self.wait.for_element_clickable(self.locator).clear()
 
     def type(self, text: str):
         element = self.wait.for_element_visible(self.locator)
