@@ -1,7 +1,13 @@
 import pytest
 
+from framework.utils.appsettings import load_appsettings
 from framework.utils.driver_factory import DriverFactory
 from framework.utils.web_driver_wrapper import WebDriverWrapper
+
+
+def pytest_configure(config):
+    """Load appsettings once at session start so missing config fails before collection or browser work."""
+    load_appsettings()
 
 
 @pytest.fixture

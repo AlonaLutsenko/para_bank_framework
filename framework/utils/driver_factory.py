@@ -60,14 +60,6 @@ class DriverFactory:
     }
 
     @classmethod
-    def register(cls, browser_name: str) -> Callable:
-        def decorator(creator: Callable[[bool], webdriver.Remote]):
-            cls._registry[browser_name.lower()] = creator
-            return creator
-
-        return decorator
-
-    @classmethod
     def create_driver(cls, browser_name: str = "chrome", headless: bool | None = None):
         headless = _resolve_headless(headless)
         key = browser_name.lower()

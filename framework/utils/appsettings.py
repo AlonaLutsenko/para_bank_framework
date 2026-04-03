@@ -8,8 +8,11 @@ from typing import Any, Dict
 def load_appsettings() -> Dict[str, Any]:
     root = Path(__file__).resolve().parents[2]
     settings_path = root / "appsettings.json"
-    if not settings_path.exists():
-        return {}
+    if not settings_path.is_file():
+        raise FileNotFoundError(
+            f"appsettings.json not found at {settings_path}. "
+            "It is required for URLs, profiles, and other test configuration."
+        )
     return json.loads(settings_path.read_text(encoding="utf-8"))
 
 

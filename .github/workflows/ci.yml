@@ -99,3 +99,11 @@ jobs:
         with:
           name: pytest-html-report
           path: reports/report.html
+
+      - name: Upload Allure results
+        uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: allure-results
+          path: allure-results
+          if-no-files-found: warn
