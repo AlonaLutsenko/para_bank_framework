@@ -14,19 +14,6 @@ def test_page_structure_and_elements(login_page: LoginPage):
         assert login_page.is_left_menu_visible(), "Left menu is not visible"
 
 
-@case("Login Page", "Login Form", "Form Elements Visibility")
-def test_login_form_elements(login_page: LoginPage):
-    with step("Verify login form elements"):
-        assert login_page.is_username_input_displayed(), "Username input is not displayed"
-        assert login_page.is_password_input_displayed(), "Password input is not displayed"
-        assert login_page.is_login_button_displayed(), "Login button is not displayed"
-        assert login_page.is_login_button_enabled(), "Login button should be enabled"
-        assert login_page.is_username_input_enabled(), "Username input should be enabled"
-        assert login_page.is_password_input_enabled(), "Password input should be enabled"
-        assert login_page.is_forgot_login_link_displayed(), "Forgot login link is not displayed"
-        assert login_page.is_register_link_displayed(), "Register link is not displayed"
-
-
 @case("Login Page", "Navigation", "Navigation Buttons")
 def test_navigation_elements(login_page: LoginPage):
     with step("Verify navigation buttons"):
@@ -51,7 +38,7 @@ def test_right_panel_services(login_page: LoginPage):
     with step("Verify right panel services"):
         assert login_page.is_right_panel_displayed(), "Right panel is not displayed"
         assert (
-            login_page.is_atm_services_caption_displayed() or login_page.is_online_services_caption_displayed()
+            login_page.is_atm_services_caption_displayed() and login_page.is_online_services_caption_displayed()
         ), "At least one services caption should be displayed"
 
 

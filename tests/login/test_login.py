@@ -6,6 +6,8 @@ from ui.pages.login_page import LoginPage
 def test_login_valid_user(login_page: LoginPage):
     with step("Verify login form is visible"):
         assert login_page.is_login_form_visible(), "Login form should be visible"
+        assert login_page.is_forgot_login_link_displayed(), "Forgot login link is not displayed"
+        assert login_page.is_register_link_displayed(), "Register link is not displayed"
 
     with step("Perform login with valid credentials"):
         login_page.login(user_type="default")
@@ -22,9 +24,7 @@ def test_login_invalid_credentials(login_page: LoginPage):
         login_page.submit_login()
 
     with step("Verify error message is displayed"):
-        error_message = login_page.get_error_message()
-        assert error_message is not None, "Error message should be displayed for invalid credentials"
-        assert len(error_message) > 0, "Error message should not be empty"
+        assert login_page.is_invalid_credentials_error_displayed(), "Expected invalid-credentials error title and body"
 
 
 @case("Login", "User Authentication", "Empty Fields Validation")
@@ -35,5 +35,6 @@ def test_login_with_empty_fields(login_page: LoginPage):
         login_page.submit_login()
 
     with step("Verify error message is displayed"):
-        error_message = login_page.get_error_message()
-        assert error_message is not None, "Error message should be displayed for empty login"
+        assert (
+            login_page.is_empty_fields_validation_error_displayed()
+        ), "Expected empty-fields validation error title and body"

@@ -25,7 +25,6 @@ class LoginPage(BasePage):
 
         # Top panel
         LOGO = Locator.css("img.logo")
-        CAPTION = Locator.css("p.caption")
 
         # Navigation buttons
         HOME_BUTTON = Locator.css("ul.button li.home a")
@@ -49,15 +48,7 @@ class LoginPage(BasePage):
 
         # Right panel - services
         ATM_SERVICES_CAPTION = Locator.css("ul.services li.captionone")
-        WITHDRAW_FUNDS_LINK = Locator.css("ul.services a[href*='Withdraw Funds']")
-        TRANSFER_FUNDS_LINK = Locator.css("ul.services a[href*='Transfer Funds']")
-        CHECK_BALANCES_LINK = Locator.css("ul.services a[href*='Check Balances']")
-        MAKE_DEPOSITS_LINK = Locator.css("ul.services a[href*='Make Deposits']")
-
         ONLINE_SERVICES_CAPTION = Locator.css("ul.servicestwo li.captiontwo")
-        BILL_PAY_LINK = Locator.css("ul.servicestwo a[href*='Bill Pay']")
-        ACCOUNT_HISTORY_LINK = Locator.css("ul.servicestwo a[href*='Account History']")
-        ONLINE_TRANSFER_FUNDS_LINK = Locator.css("ul.servicestwo a[href*='Transfer Funds']")
 
         # Right panel - news
         LATEST_NEWS_HEADING = Locator.css("h4")
@@ -67,12 +58,11 @@ class LoginPage(BasePage):
         NEWS_ITEM_TRANSFERS = Locator.css("ul.events a[href*='news.htm#4']")
 
         ERROR_TITLE = Locator.class_name("title")
-        ACCOUNTS_OVERVIEW_TITLE = Locator.xpath("//h1[contains(.,'Account')]")
+        ERROR_BODY = Locator.class_name("error")
 
     def __init__(self, driver: WebDriverWrapper):
         super().__init__(driver)
 
-    # Login form elements
     @cached_property
     def username_input(self):
         return Input(self.driver, self.Locators.USERNAME_INPUT)
@@ -89,7 +79,10 @@ class LoginPage(BasePage):
     def error_title(self):
         return Text(self.driver, self.Locators.ERROR_TITLE)
 
-    # Main panels
+    @cached_property
+    def error_body(self):
+        return Text(self.driver, self.Locators.ERROR_BODY)
+
     @cached_property
     def main_panel(self):
         return WebElementWrapper(self.driver, self.Locators.MAIN_PANEL)
@@ -114,16 +107,10 @@ class LoginPage(BasePage):
     def login_panel(self):
         return WebElementWrapper(self.driver, self.Locators.LOGIN_PANEL)
 
-    # Top panel
     @cached_property
     def logo(self):
         return WebElementWrapper(self.driver, self.Locators.LOGO)
 
-    @cached_property
-    def caption(self):
-        return Text(self.driver, self.Locators.CAPTION)
-
-    # Navigation buttons
     @cached_property
     def home_button(self):
         return Button(self.driver, self.Locators.HOME_BUTTON)
@@ -136,7 +123,6 @@ class LoginPage(BasePage):
     def contact_button(self):
         return Button(self.driver, self.Locators.CONTACT_BUTTON)
 
-    # Left menu
     @cached_property
     def solutions_menu(self):
         return WebElementWrapper(self.driver, self.Locators.SOLUTIONS_MENU)
@@ -161,7 +147,6 @@ class LoginPage(BasePage):
     def admin_page_link(self):
         return WebElementWrapper(self.driver, self.Locators.ADMIN_PAGE_LINK)
 
-    # Login form links
     @cached_property
     def forgot_login_link(self):
         return WebElementWrapper(self.driver, self.Locators.FORGOT_LOGIN_LINK)
@@ -170,44 +155,14 @@ class LoginPage(BasePage):
     def register_link(self):
         return WebElementWrapper(self.driver, self.Locators.REGISTER_LINK)
 
-    # Right panel - services
     @cached_property
     def atm_services_caption(self):
         return Text(self.driver, self.Locators.ATM_SERVICES_CAPTION)
 
     @cached_property
-    def withdraw_funds_link(self):
-        return WebElementWrapper(self.driver, self.Locators.WITHDRAW_FUNDS_LINK)
-
-    @cached_property
-    def transfer_funds_link(self):
-        return WebElementWrapper(self.driver, self.Locators.TRANSFER_FUNDS_LINK)
-
-    @cached_property
-    def check_balances_link(self):
-        return WebElementWrapper(self.driver, self.Locators.CHECK_BALANCES_LINK)
-
-    @cached_property
-    def make_deposits_link(self):
-        return WebElementWrapper(self.driver, self.Locators.MAKE_DEPOSITS_LINK)
-
-    @cached_property
     def online_services_caption(self):
         return Text(self.driver, self.Locators.ONLINE_SERVICES_CAPTION)
 
-    @cached_property
-    def bill_pay_link(self):
-        return WebElementWrapper(self.driver, self.Locators.BILL_PAY_LINK)
-
-    @cached_property
-    def account_history_link(self):
-        return WebElementWrapper(self.driver, self.Locators.ACCOUNT_HISTORY_LINK)
-
-    @cached_property
-    def online_transfer_funds_link(self):
-        return WebElementWrapper(self.driver, self.Locators.ONLINE_TRANSFER_FUNDS_LINK)
-
-    # Right panel - news
     @cached_property
     def latest_news_heading(self):
         return Text(self.driver, self.Locators.LATEST_NEWS_HEADING)
@@ -228,7 +183,6 @@ class LoginPage(BasePage):
     def news_item_transfers(self):
         return Text(self.driver, self.Locators.NEWS_ITEM_TRANSFERS)
 
-    # Core login methods
     def login(self, user_type: str = "default"):
         creds = get_credentials(user_type)
         self.username_input.type(creds["username"])
@@ -250,35 +204,23 @@ class LoginPage(BasePage):
     def clear_password(self) -> None:
         self.password_input.clear()
 
-    def clear_and_type_username(self, username: str) -> None:
-        self.username_input.clear_and_type(username)
+    def is_invalid_credentials_error_displayed(self) -> bool:
+        title = (self.error_title.get_text() or "").strip()
+        body = (self.error_body.get_text() or "").strip()
+        return title == "Error!" and body == "The username and password could not be verified."
 
-    def get_username_value(self) -> Optional[str]:
-        return self.username_input.get_value()
-
-    def get_error_message(self) -> Optional[str]:
-        return self.error_title.get_text()
+    def is_empty_fields_validation_error_displayed(self) -> bool:
+        title = (self.error_title.get_text() or "").strip()
+        body = (self.error_body.get_text() or "").strip()
+        return title == "Error!" and body == "Please enter a username and password."
 
     def is_login_successful(self) -> bool:
         try:
-            self.wait.for_title_contains("ParaBank", timeout=10)
-            current_url = self.driver.driver.current_url.lower()
-            if "overview" in current_url or "account" in current_url:
-                return True
-            if "login" not in current_url and "index" not in current_url:
-                return True
+            self.wait.for_title_to_be("ParaBank | Accounts Overview", timeout=10)
+            return True
+        except TimeoutException:
             return False
-        except (TimeoutException, AttributeError):
-            try:
-                current_url = self.driver.driver.current_url.lower()
-                return "overview" in current_url or "account" in current_url
-            except AttributeError:
-                return False
 
-    def get_accounts_overview_title(self) -> Optional[str]:
-        return Text(self.driver, self.Locators.ACCOUNTS_OVERVIEW_TITLE).get_text()
-
-    # Verification methods
     def is_page_loaded(self) -> bool:
         return self.main_panel.is_displayed() and self.login_panel.is_displayed()
 
@@ -291,30 +233,6 @@ class LoginPage(BasePage):
             and self.password_input.is_displayed()
             and self.login_button.is_displayed()
         )
-
-    def is_username_input_displayed(self) -> bool:
-        return self.username_input.is_displayed()
-
-    def is_password_input_displayed(self) -> bool:
-        return self.password_input.is_displayed()
-
-    def is_login_button_displayed(self) -> bool:
-        return self.login_button.is_displayed()
-
-    def is_login_button_enabled(self) -> bool:
-        return self.login_button.is_enabled()
-
-    def is_username_input_enabled(self) -> bool:
-        return self.username_input.is_enabled()
-
-    def is_password_input_enabled(self) -> bool:
-        return self.password_input.is_enabled()
-
-    def is_forgot_login_link_displayed(self) -> bool:
-        return self.forgot_login_link.is_displayed()
-
-    def is_register_link_displayed(self) -> bool:
-        return self.register_link.is_displayed()
 
     def is_navigation_visible(self) -> bool:
         return (
@@ -374,54 +292,11 @@ class LoginPage(BasePage):
     def is_admin_page_link_displayed(self) -> bool:
         return self.admin_page_link.is_displayed()
 
-    def can_login(self) -> bool:
-        return self.is_login_form_visible() and self.login_button.is_enabled()
+    def is_forgot_login_link_displayed(self) -> bool:
+        return self.forgot_login_link.is_displayed()
 
-    # Text retrieval methods
-    def get_caption_text(self) -> Optional[str]:
-        return self.caption.get_text()
-
-    def get_atm_services_caption(self) -> Optional[str]:
-        return self.atm_services_caption.get_text()
-
-    def get_online_services_caption(self) -> Optional[str]:
-        return self.online_services_caption.get_text()
-
-    def get_latest_news_heading(self) -> Optional[str]:
-        return self.latest_news_heading.get_text()
-
-    def get_news_date(self) -> Optional[str]:
-        return self.news_date.get_text()
-
-    def get_news_item_text(self, news_item: str) -> Optional[str]:
-        news_map = {
-            "reopened": self.news_item_reopened,
-            "bill_pay": self.news_item_bill_pay,
-            "transfers": self.news_item_transfers,
-        }
-        if news_item in news_map:
-            return news_map[news_item].get_text()
-        return None
-
-    # Service links verification
-    def are_atm_services_visible(self) -> bool:
-        visible_count = 0
-        if self.withdraw_funds_link.is_displayed():
-            visible_count += 1
-        if self.transfer_funds_link.is_displayed():
-            visible_count += 1
-        if self.check_balances_link.is_displayed():
-            visible_count += 1
-        if self.make_deposits_link.is_displayed():
-            visible_count += 1
-        return visible_count >= 3
-
-    def are_online_services_visible(self) -> bool:
-        return (
-            self.bill_pay_link.is_displayed()
-            and self.account_history_link.is_displayed()
-            and self.online_transfer_funds_link.is_displayed()
-        )
+    def is_register_link_displayed(self) -> bool:
+        return self.register_link.is_displayed()
 
     def are_news_items_visible(self) -> bool:
         return (
@@ -430,7 +305,9 @@ class LoginPage(BasePage):
             and self.news_item_transfers.is_displayed()
         )
 
-    # Utility methods
+    def get_news_date(self) -> Optional[str]:
+        return self.news_date.get_text()
+
     def get_all_panels_visible(self) -> dict:
         return {
             "main_panel": self.main_panel.is_displayed(),
