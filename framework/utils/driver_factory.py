@@ -2,18 +2,12 @@ import os
 from typing import Callable
 
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 
-from framework.utils.appsettings import get_profile, get_setting
-
-
-def _resolve_headless(headless: bool | None) -> bool:
-    if headless is not None:
-        return headless
-    is_ci = os.getenv("CI") == "true" or os.getenv("GITHUB_ACTIONS") == "true"
-    profile = get_profile("ci" if is_ci else "local")
-    return profile.get("headless", True if is_ci else False)
+from framework.run_config import RunConfig
 
 
+# TODO: add create_remote_chrome
 def _create_chrome_driver(headless: bool):
     options = webdriver.ChromeOptions()
 
@@ -29,21 +23,13 @@ def _create_chrome_driver(headless: bool):
     else:
         options.add_argument("--start-maximized")
 
-    for arg in get_setting("chrome", "args", default=[]):
-        options.add_argument(arg)
+    if RunConfig.remote():
+        remote_url = os.getenv("SELENIUM_REMOTE_URL")
+        if remote_url:
+            return webdriver.Remote(command_executor=remote_url, options=options)
 
-    remote_url = os.getenv("SELENIUM_REMOTE_URL")
-    if remote_url:
-        return webdriver.Remote(command_executor=remote_url, options=options)
-
-    chromedriver_path = os.getenv("CHROMEDRIVER_PATH")
-    if chromedriver_path:
-        from selenium.webdriver.chrome.service import Service
-
-        service = Service(chromedriver_path)
-        return webdriver.Chrome(service=service, options=options)
-
-    return webdriver.Chrome(options=options)
+    service = Service(os.getenv("CHROMEDRIVER_PATH"))
+    return webdriver.Chrome(service=service, options=options)
 
 
 def _create_firefox_driver(headless: bool):
@@ -60,9 +46,9 @@ class DriverFactory:
     }
 
     @classmethod
-    def create_driver(cls, browser_name: str = "chrome", headless: bool | None = None):
-        headless = _resolve_headless(headless)
-        key = browser_name.lower()
+    def create_driver(cls, browser_name: None, headless: bool | None = None):
+        key = browser_name if browser_name else RunConfig.browser()
+        headless = headless if headless else RunConfig.headless()
 
         if key not in cls._registry:
             supported = ", ".join(sorted(cls._registry))

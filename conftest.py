@@ -1,19 +1,24 @@
 import pytest
 
-from framework.utils.appsettings import load_appsettings
+from framework.run_config import RunConfig
 from framework.utils.driver_factory import DriverFactory
 from framework.utils.web_driver_wrapper import WebDriverWrapper
 
 
 def pytest_configure(config):
     """Load appsettings once at session start so missing config fails before collection or browser work."""
-    load_appsettings()
+    RunConfig.set_run_config(
+        base_url="https://parabank.parasoft.com",
+        browser=config.getoption("--browser"),
+        headless=config.getoption("--headless"),
+        remote=config.getoption("--remote"),
+    )
 
 
 @pytest.fixture
 def driver(request):
-    browser = request.config.getoption("--browser")
-    headless = request.config.getoption("--headless")
+    browser = RunConfig.browser()
+    headless = RunConfig.headless()
     raw_driver = DriverFactory.create_driver(browser, headless=headless)
     driver = WebDriverWrapper(raw_driver)
     yield driver
@@ -31,6 +36,12 @@ def pytest_addoption(parser):
     parser.addoption(
         "--headless",
         action="store_true",
-        default=None,
+        default=False,
         help="Run browser in headless mode",
+    )
+    parser.addoption(
+        "--remote",
+        action="store_true",
+        default=False,
+        help="",
     )

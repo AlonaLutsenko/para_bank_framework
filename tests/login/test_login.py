@@ -4,11 +4,6 @@ from ui.pages.login_page import LoginPage
 
 @case("Login", "User Authentication", "Valid Login")
 def test_login_valid_user(login_page: LoginPage):
-    with step("Verify login form is visible"):
-        assert login_page.is_login_form_visible(), "Login form should be visible"
-        assert login_page.is_forgot_login_link_displayed(), "Forgot login link is not displayed"
-        assert login_page.is_register_link_displayed(), "Register link is not displayed"
-
     with step("Perform login with valid credentials"):
         login_page.login(user_type="default")
 

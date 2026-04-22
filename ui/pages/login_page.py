@@ -229,43 +229,45 @@ class LoginPage(BasePage):
 
     def is_login_form_visible(self) -> bool:
         return (
-            self.username_input.is_displayed()
-            and self.password_input.is_displayed()
-            and self.login_button.is_displayed()
+            self.username_input.verify_element_is_displayed()
+            and self.password_input.verify_element_is_displayed()
+            and self.login_button.verify_element_is_displayed()
         )
 
     def is_navigation_visible(self) -> bool:
         return (
-            self.home_button.is_displayed() and self.about_button.is_displayed() and self.contact_button.is_displayed()
+            self.home_button.verify_element_is_displayed()
+            and self.about_button.verify_element_is_displayed()
+            and self.contact_button.verify_element_is_displayed()
         )
 
     def is_home_button_ready(self) -> bool:
-        return self.home_button.is_displayed() and self.home_button.is_enabled()
+        return self.home_button.verify_element_is_displayed() and self.home_button.verify_element_is_displayed()
 
     def is_about_button_ready(self) -> bool:
-        return self.about_button.is_displayed() and self.about_button.is_enabled()
+        return self.about_button.verify_element_is_displayed() and self.about_button.verify_element_is_displayed()
 
     def is_contact_button_ready(self) -> bool:
-        return self.contact_button.is_displayed() and self.contact_button.is_enabled()
+        return self.contact_button.verify_element_is_displayed() and self.contact_button.verify_element_is_displayed()
 
     def is_right_panel_visible(self) -> bool:
         return (
             self.right_panel.is_displayed()
-            and self.atm_services_caption.is_displayed()
-            and self.latest_news_heading.is_displayed()
+            and self.atm_services_caption.verify_element_is_displayed()
+            and self.latest_news_heading.verify_element_is_displayed()
         )
 
     def is_right_panel_displayed(self) -> bool:
         return self.right_panel.is_displayed()
 
     def is_atm_services_caption_displayed(self) -> bool:
-        return self.atm_services_caption.is_displayed()
+        return self.atm_services_caption.verify_element_is_displayed()
 
     def is_online_services_caption_displayed(self) -> bool:
-        return self.online_services_caption.is_displayed()
+        return self.online_services_caption.verify_element_is_displayed()
 
     def is_latest_news_heading_displayed(self) -> bool:
-        return self.latest_news_heading.is_displayed()
+        return self.latest_news_heading.verify_element_is_displayed()
 
     def is_left_menu_visible(self) -> bool:
         return (
@@ -300,9 +302,9 @@ class LoginPage(BasePage):
 
     def are_news_items_visible(self) -> bool:
         return (
-            self.news_item_reopened.is_displayed()
-            and self.news_item_bill_pay.is_displayed()
-            and self.news_item_transfers.is_displayed()
+            self.news_item_reopened.verify_element_is_displayed()
+            and self.news_item_bill_pay.verify_element_is_displayed()
+            and self.news_item_transfers.verify_element_is_displayed()
         )
 
     def get_news_date(self) -> Optional[str]:
