@@ -36,12 +36,12 @@ def pytest_addoption(parser):
     parser.addoption(
         "--headless",
         action="store_true",
-        default=False,
+        default=None,
         help="Run browser in headless mode",
     )
     parser.addoption(
         "--remote",
         action="store_true",
-        default=False,
+        default=None,
         help="",
     )

@@ -79,8 +79,8 @@ jobs:
           mkdir -p reports
           pytest \
             --browser=chrome \
-            --headless=True \
-            --remote=True \
+            --headless \
+            --remote \
             --cov=framework \
             --cov=ui \
             --cov-report=xml:coverage.xml \
