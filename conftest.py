@@ -6,7 +6,7 @@ from framework.utils.logger import setup_logger
 from framework.utils.web_driver_wrapper import WebDriverWrapper
 
 
-def pytest_configure(config):
+def pytest_configure():
     """Load appsettings once at session start so missing config fails before collection or browser work."""
     RunConfig.set_base_url("https://parabank.parasoft.com")
     setup_logger()
@@ -21,8 +21,7 @@ def driver(request):
     raw_driver = DriverFactory.create_driver(browser, headless=headless, remote=remote)
     driver = WebDriverWrapper(raw_driver)
     yield driver
-    if hasattr(driver, "driver") and driver.driver:
-        driver.driver.quit()
+    driver.quit()
 
 
 def pytest_addoption(parser):
