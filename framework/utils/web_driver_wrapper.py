@@ -10,3 +10,8 @@ class WebDriverWrapper:
 
     def find_elements(self, by, locator):
         return self.driver.find_elements(by, locator)
+
+    def quit(self):
+        if self.driver is not None:
+            self.driver.quit()
+            self.driver = None
