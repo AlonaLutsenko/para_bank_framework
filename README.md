@@ -63,14 +63,12 @@ On Linux/macOS, use `export SELENIUM_REMOTE_URL=...` instead of `set`.
 |--------|-------------|
 | `--browser=chrome` \| `firefox` | Browser (default: `chrome`) |
 | `--headless` | Run without a visible window |
-| `--remote` | Use `SELENIUM_REMOTE_URL` instead of a local driver |
+| `--remote` | Use Remote WebDriver; URL from `--remote-url` or `SELENIUM_REMOTE_URL` |
+| `--remote-url` | Grid URL (optional; overrides `SELENIUM_REMOTE_URL` when using `--remote`) |
 
-**Chrome paths (optional)**
+**Drivers**
 
-If Chrome or ChromeDriver are non-standard, you can set:
-
-- `CHROME_BIN` — path to the Chrome binary  
-- `CHROMEDRIVER_PATH` — path to `chromedriver` (when not using `--remote`)
+For local runs without `--remote`, Selenium 4 uses [Selenium Manager](https://www.selenium.dev/documentation/selenium_manager/) to obtain matching ChromeDriver / GeckoDriver when needed—no `CHROMEDRIVER_PATH` env var required for typical setups.
 
 ## Reports
 
