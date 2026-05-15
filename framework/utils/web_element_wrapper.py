@@ -1,4 +1,6 @@
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from typing import Optional
+
+from selenium.webdriver.remote.webelement import WebElement
 
 from framework.utils.locators import Locator
 from framework.utils.wait import Wait
@@ -11,38 +13,35 @@ class WebElementWrapper:
         self.locator = locator
         self.wait = Wait(driver)
 
-    def _get_element(self):
-        try:
-            return self.driver.find_element(self.locator)
-        except NoSuchElementException as e:
-            print(f"Element not found: {self.locator}, {e}")
+    def get_element(self):
+        return self.driver.find_element(*self.locator.as_tuple)
 
-    def _wait_and_get_element(self):
-        return self.wait.for_element_visible(self.locator)
+    def get_elements(self):
+        return self.driver.find_elements(*self.locator.as_tuple)
 
-    def click(self):
-        self.wait.for_element_clickable(self.locator).click()
+    def click(self, timeout=None):
+        self.wait_for_visible(timeout=timeout).click()
 
-    def type(self, text: str):
-        element = self.wait.for_element_visible(self.locator)
-        element.clear()
-        element.send_keys(text)
+    def clear(self, timeout=None):
+        self.wait_for_visible(timeout=timeout).clear()
 
-    def get_text(self) -> str:
-        return self.wait.for_element_visible(self.locator).text
+    def type(self, text: str, timeout=None):
+        self.wait_for_visible(timeout=timeout).send_keys(text)
+
+    def get_text(self, timeout=None) -> str:
+        return self.wait_for_visible(timeout=timeout).text
+
+    def get_attribute(self, name: str, timeout: Optional[int] = None) -> str | None:
+        return self.wait_for_visible(timeout).get_attribute(name)
 
     def is_displayed(self) -> bool:
-        try:
-            element = self.wait.for_element_present(self.locator, timeout=2)
-            return element.is_displayed()
-        except TimeoutException:
-            return False
+        return self.get_element().is_displayed()
 
-    def wait_for_visible(self, timeout: int = None):
+    def wait_for_visible(self, timeout: Optional[int] = None) -> WebElement:
         return self.wait.for_element_visible(self.locator, timeout=timeout)
 
-    def wait_for_clickable(self, timeout: int = None):
+    def wait_for_clickable(self, timeout: Optional[int] = None) -> WebElement:
         return self.wait.for_element_clickable(self.locator, timeout=timeout)
 
-    def wait_for_invisible(self, timeout: int = None) -> bool:
+    def wait_for_invisible(self, timeout: Optional[int] = None) -> bool:
         return self.wait.for_element_invisible(self.locator, timeout=timeout)
